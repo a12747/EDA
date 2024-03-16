@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Definindo a estrutura do nó da lista ligada
+/**
+ * @brief 
+ * Estrutura da Matriz
+ */
 typedef struct Matriz {
     int value;
     int row;
@@ -9,7 +12,14 @@ typedef struct Matriz {
     struct Matriz *next;
 } Matriz;
 
-// Função para criar um novo nó da lista ligada
+/**
+ * @brief Create a Matriz object
+ * Criar uma nova matriz
+ * @param value 
+ * @param row 
+ * @param col 
+ * @return Matriz* 
+ */
 Matriz* createMatriz(int value, int row, int col) {
     Matriz* newMatriz = (Matriz*)malloc(sizeof(Matriz));
     newMatriz->value = value;
@@ -19,7 +29,14 @@ Matriz* createMatriz(int value, int row, int col) {
     return newMatriz;
 }
 
-// Função para inserir um nó na lista ligada
+/**
+ * @brief 
+ * Inserir um novo valor na matriz
+ * @param head 
+ * @param value 
+ * @param row 
+ * @param col 
+ */
 void insertMatriz(Matriz** head, int value, int row, int col) {
     Matriz* newMatriz = createMatriz(value, row, col);
     if (*head == NULL) {
@@ -30,7 +47,14 @@ void insertMatriz(Matriz** head, int value, int row, int col) {
     }
 }
 
-// Função para verificar se um número pode ser adicionado na posição (row, col)
+/**
+ * @brief 
+ * Função para verificar se um número pode ser adicionado na posição (row, col)
+ * @param head 
+ * @param row 
+ * @param col 
+ * @return int 
+ */
 int isSafe(Matriz* head, int row, int col) {
     while (head != NULL) {
         if (head->row == row || head->col == col)
@@ -40,7 +64,13 @@ int isSafe(Matriz* head, int row, int col) {
     return 1; // Se não compartilha linha ou coluna, é seguro
 }
 
-// Função auxiliar para encontrar a soma máxima
+/**
+ * @brief Função auxiliar para encontrar a soma máxima
+ * 
+ * @param head 
+ * @param currentSum 
+ * @param maxSum 
+ */
 void findMaxSumUtil(Matriz* head, int currentSum, int* maxSum) {
     if (head == NULL) {
         if (currentSum > *maxSum) {
@@ -58,18 +88,28 @@ void findMaxSumUtil(Matriz* head, int currentSum, int* maxSum) {
     }
 }
 
-// Função para encontrar a soma máxima possível dos inteiros da matriz
+/**
+ * @brief Função para encontrar a soma máxima possível dos inteiros da matriz
+ * 
+ * @param head 
+ * @return int 
+ */
 int findMaxSum(Matriz* head) {
     int maxSum = 0;
     findMaxSumUtil(head, 0, &maxSum);
     return maxSum;
 }
 
-// Função para carregar uma matriz de um arquivo de texto para a lista ligada
+/**
+ * @brief Função para carregar uma matriz de um ficheiro de texto para a lista ligada
+ * 
+ * @param filename 
+ * @return Matriz* 
+ */
 Matriz* loadMatrixFromFile(const char* filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        fprintf(stderr, "Erro ao abrir o arquivo.\n");
+        fprintf(stderr, "Erro ao abrir o ficheiro.\n");
         return NULL;
     }
 
@@ -94,7 +134,14 @@ Matriz* loadMatrixFromFile(const char* filename) {
     return head;
 }
 
-// Função para alterar o valor de um nó da lista ligada
+/**
+ * @brief Função para alterar o valor de um nó da lista ligada
+ * 
+ * @param head 
+ * @param row 
+ * @param col 
+ * @param newValue 
+ */
 void modifyMatrizValue(Matriz* head, int row, int col, int newValue) {
     while (head != NULL) {
         if (head->row == row && head->col == col) {
@@ -103,4 +150,34 @@ void modifyMatrizValue(Matriz* head, int row, int col, int newValue) {
         }
         head = head->next;
     }
+}
+
+/**
+ * @brief Função para inserir uma nova linha na matriz
+ * 
+ * @param head 
+ * @param rowCount 
+ * @param colCount 
+ * @param rowNumber 
+ */
+void insertRow(Matriz** head, int* rowCount, int colCount, int rowNumber) {
+    for (int col = 0; col < colCount; col++) {
+        insertNode(head, 0, rowNumber, col);
+    }
+    (*rowCount)++;
+}
+
+/**
+ * @brief Função para inserir uma nova coluna na matriz
+ * 
+ * @param head 
+ * @param rowCount 
+ * @param colCount 
+ * @param colNumber 
+ */
+void insertColumn(Matriz** head, int rowCount, int* colCount, int colNumber) {
+    for (int row = 0; row < rowCount; row++) {
+        insertNode(head, 0, row, colNumber);
+    }
+    (*colCount)++;
 }
